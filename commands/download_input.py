@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 #
-# GCJ Cupcake by jbernadas, v1.0 beta
+# GCJ Cupcake by jbernadas
 # Copyright (C) 2010  Jorge Bernadas (jbernadas@gmail.com)
 #
 # This program is free software: you can redistribute it and/or modify

@@ -1,6 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 #
-# GCJ Cupcake by jbernadas, v1.0 beta
+# GCJ Cupcake by jbernadas
 # Copyright (C) 2010  Jorge Bernadas (jbernadas@gmail.com)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -18,6 +18,6 @@
 
 # Define constants with the version and the names of the user configuration file
 # and the current configuration file.
-VERSION = 'v1.0 beta'
+VERSION = 'v1.0 beta2'
 USER_CONFIG_FILE = 'commands/config/user_config.py'
 CURRENT_CONFIG_FILE = 'commands/config/current_config.py'
