@@ -1,0 +1,224 @@
+GCJ Cupcake by jbernadas, v1.0 beta
+Download and submit tool for the Google Code Jam
+-------------------------------------------------------------------------------
+TABLE OF CONTENTS:
+
+0. Disclaimer
+1. Prerequisites
+2. Basic usage
+  a. Configuring the system
+  b. Initializing the contest
+  c. Downloading an input
+  d. Submitting a solution
+3. Configuration files
+4. Executable files
+  a. Contest crawler
+  b. Login agent
+  c. Input downloader
+  d. Solution submitter
+
+-------------------------------------------------------------------------------
+0. DISCLAIMER
+
+GCJ Cupcake by jbernadas, v1.0 beta
+Copyright (C) 2010  Jorge Bernadas (jbernadas@gmail.com)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Copyright (c) 2010  Jorge Bernadas (a.k.a. jbernadas)
+
+-------------------------------------------------------------------------------
+1. PREREQUISITES
+
+To install this software, just copy these files into any folder and execute the
+scripts from the main folder (the one that contains this file).
+
+To run the executable scripts, you will need Python 2.6, which can be
+downloaded from <http://www.python.org/download/releases/>. This was developed
+and tested using Python 2.6.5, so we recommend using 2.6.5 or superior.
+
+-------------------------------------------------------------------------------
+2. BASIC USAGE
+
+To use this tool, open a terminal at the main folder (the one that contains
+this file). Executables in the commands folders expect to be run from this
+directory, otherwise, they will not find the configuration files in the
+commands/config directory.
+
+To ease executing these program, shell scripts (.bat for Windows computers) are
+provided, which just call the corresponding executable with the same
+parameters. You are free to modify these shell scripts to always pass some
+parameters or any other reason you see fit.
+
+
+2a. Configuring the system
+
+Before attempting to run an executable included with this software, you should 
+configure the system by writting some needed information in the user
+configuration file, located at ./commands/config/user_config.py. This file is
+formatted as a Python dict structure, but a basic one should be included with
+this software. Three values are needed to run the software:
+
+- host: The name of the website hosting the contest. For normal contests and
+  for the remaining of this example, the host is 'code.google.com'.
+
+- user: Your google account, for example 'myaccount@gmail.com'.
+
+- source_name_format: This is a string used to format the names for a solution
+  main source file. In this example, we will assume we use C++ and set it to
+  '{problem}-{input}-{id}.cpp'.
+
+Look at Section 3 for more information about these and many more configuration
+parameters.
+
+
+2b. Initializing the contest
+
+The first step to use this software is initializing the contest. To do this
+you have to specify the contest id, which can be found in the dashboard URL
+for that contest. For example, for the GCJ 2010 Qualification Round, the
+dashboard URL is:
+
+http://code.google.com/codejam/contest/dashboard?c=433101
+
+so, you can initialize the contest executing:
+
+$ ./init-contest 433101
+
+During this step, the software logs into Code Jam servers (he may ask you your
+password) and extracts information from the contest, including the problems id
+and names and the middleware tokens required to transfer information.
+
+Then, all this information, including the login cookie and the information in
+the user configuration file, is stored in the current configuration file (found
+at ./commands/config/current_config.py).
+
+NOTE: Your password is not stored in the current configuration file if you did
+not entered it in the user configuration file.
+
+
+2c. Downloading an input
+
+Once you coded a solution and think you got it right, you may download an input
+using the download-input script. This script receives the problem letter (A, B
+or C for the GCJ10 Qual), the input type (small or large) and an id to
+differentiate it from other attempts.
+
+For example, to download a small input for the problem A, Snapper Chain, you
+can execute:
+
+$ ./download-input A small 0
+
+which will download the input file and store it in ./source/A-small-0.in. Now
+it is time to run your solution and generate the output file.
+
+NOTE: This script downloads an input file for the specified problem and starts
+its timer without asking a confirmation. You should double-check the
+parameters before running it or you might end starting a timer for other
+problem.
+
+NOTE: Downloading an input file twice in the same attempt will just redownload
+the same input file if its time has *NOT* expired. Otherwise, it will download
+another input and start another attempt for small inputs.
+
+
+2d. Submitting a solution
+
+After running your solution and generating the output, it is time to submit the
+output file with the source files using the submit-solution script. This script
+receives the problem letter, the input type and the id used when the input was
+downloaded.
+
+For example, to submit the solution for the small input of problem A, Snapper
+Chain, you can execute:
+
+$ ./submit-solution A small 0
+
+which will submit the file ./source/A-small-0.out as the answer and
+./source/A-small-0.cpp as the only source file. If you want to add extra source
+file, you may use the -a flag as many times you need. For example, if you want
+to submit an extra file called library.cpp you can execute:
+
+$ ./submit-solution -a library.cpp A small 0
+
+which will submit the file ./source/A-small-0.out as the answer and
+./source/A-small-0.cpp and ./library.cpp as the source files. If you add a
+directory using the -a option, the program will compress it into a zip file
+before submitting it.
+
+After submitting the file, the Code Jam server will answer with a message
+string. The most important values are:
+
+- 'Wrong Answer' : Your solution for the small input was wrong, try again.
+- 'Good Job!' : Your solution for the small input was right.
+- 'Your answer has been received and will be judged at the end of the contest.' :
+  This is received after submitting the output for the large input.
+
+-------------------------------------------------------------------------------
+3. CONFIGURATION FILES
+
+This tool needs one configuration file to run, which can be located at
+./commands/config/user_config.py. This file is formatted as a python dict
+structure and may have the following keys:
+
+- 'host' : The name of the website hosting the contest. For normal contests,
+  it is 'code.google.com'.
+
+- 'user' : Your google account, the '@gmail.com' might be omitted for contests
+  in 'code.google.com'.
+
+- 'password' : The password for your google account. This value is optional, if
+  it is not found the executable will ask for it when necessary.
+
+- 'data_directory' : Directory where input files are written and the output and
+  main source file is read from. This value is optional, if not specified it
+  will default to './source'.
+
+- 'input_name_format' : Format used to generate filenames for input files,
+  where '{problem}' will be substituted for the problem letter, '{input}' for
+  the input type (small or large) and '{id}' for the submit id. This value is
+  optional, if not specified it will default to '{problem}-{input}-{id}.in'.
+
+- 'output_name_format' : Format used to generate filenames for output files,
+  whose format is similar to the input format. This value is optional, if not
+  specified it will default to '{problem}-{input}-{id}.out'.
+
+- 'source_name_format' : Format used to generate filenames for the main source
+  files, whose format is similar to the input format. This value is NOT
+  optional, as there is no sensible default value for all programming
+  languages.
+
+All these values (with the exception of 'host' and 'user') can be overriden in
+the executables by using command line options. When these values are specified
+in the command line, the values in the configuration files and the defaults
+values are ignored.
+
+For the input, output and source format the final filename is generated using
+Python str.format() function.
+
+If you want to change the path of the configuration files, look at the
+./commands/gcj_cupcake/Constants.py file and change the respective variables.
+Remember that those paths are relative to the current directory, not to the
+./commands directory.
+
+IMPORTANT: Most executables do not use the user configuration file, they use
+a current configuration file (./commands/config/current_config.py) generated
+when the contest is initialized. If you want to change something, either change
+user_config.py and reinitialize the contest or make the change directly in
+current_config.py.
+
+-------------------------------------------------------------------------------
+4. EXECUTABLE FILES
+
+Comming soon, for now, see the help for each executable using the --help
+option.
