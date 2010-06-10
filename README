@@ -74,9 +74,9 @@ this software. Three values are needed to run the software:
 
 - user: Your google account, for example 'myaccount@gmail.com'.
 
-- source_name_format: This is a string used to format the names for a solution
-  main source file. In this example, we will assume we use C++ and set it to
-  '{problem}-{input}-{id}.cpp'.
+- source_names_format: This is a list of strings that specify the default
+  sources included with an output file. In this example, we will assume we use
+  C++ and set it to ['{problem}-{input}-{id}.cpp'].
 
 Look at Section 3 for more information about these and many more configuration
 parameters.
@@ -193,15 +193,15 @@ structure and may have the following keys:
   whose format is similar to the input format. This value is optional, if not
   specified it will default to '{problem}-{input}-{id}.out'.
 
-- 'source_name_format' : Format used to generate filenames for the main source
-  files, whose format is similar to the input format. This value is NOT
-  optional, as there is no sensible default value for all programming
-  languages.
+- 'source_names_format' : List with filename formats for the source files
+  included by default; each list value must be formatted in the same way as the
+  input name format. This value is *NOT* optional, to prevent accidental
+  submittion of outputs with no source files.
 
-All these values (with the exception of 'host' and 'user') can be overriden in
-the executables by using command line options. When these values are specified
-in the command line, the values in the configuration files and the defaults
-values are ignored.
+All these values (with the exception of 'host', 'user' and
+'source_names_format') can be overriden in the executables by using command
+line options. When these values are specified in the command line, the values
+in the configuration files and the defaults values are ignored.
 
 For the input, output and source format the final filename is generated using
 Python str.format() function.
