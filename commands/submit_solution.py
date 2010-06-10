@@ -35,8 +35,6 @@ def main():
     help = 'Directory with the I/O files and main source files [default: ./source]')
   parser.add_option('-o', '--output-name', action = 'store', dest = 'output_name',
     help = 'Name of the file with the solution\'s output')
-  parser.add_option('-s', '--source-name', action = 'store', dest = 'source_name',
-    help = 'Name of the file with the solution\'s main source code')
   parser.add_option('-a', '--add-source', action = 'append', dest = 'extra_sources',
     help = 'Add EXTRA_SOURCE to the submitted source files', metavar = 'EXTRA_SOURCE')
   parser.add_option('-z', '--zip-sources', action = 'store_true', dest = 'zip_sources',
@@ -126,13 +124,13 @@ def main():
   # format.
   data_directory = options.data_directory or current_config.get('data_directory', './source')
   output_name_format = options.output_name or current_config.get('output_name_format', '{problem}-{input}-{id}.out')
-  source_name_format = options.source_name or current_config.get('source_name_format')
+  source_names_format = current_config.get('source_names_format')
 
   # There is no sensible default for the main source, so exit with error if no
   # value is found and it wasn't ignored.
-  if not options.ignore_def_source and not source_name_format:
+  if not options.ignore_def_source and not source_names_format:
     # Print error message and exit.
-    print 'No format found for the default source file name. Either pass it using ' \
+    print 'No format found for the default sources file name. Either pass it using ' \
       '--source-name, specify "source_name_format" in the configuration file or ' \
       'ignore it passing --ignore-default-source.'
     sys.exit(1)
@@ -153,12 +151,14 @@ def main():
   source_names = []
   if not options.ignore_def_source:
     try:
-      # Generate the source file name using the specified format and append it
-      # to the source list.
-      def_source_basename = source_name_format.format(
-        problem = problem_letter, input = input_type, id = id)
-      def_source_filename = os.path.normpath(os.path.join(data_directory, def_source_basename))
-      source_names.append(def_source_filename)
+      # Process each source name in the source formats list.
+      for source_name_format in source_names_format:
+        # Generate the source file name using the specified format and append it
+        # to the source list.
+        def_source_basename = source_name_format.format(
+          problem = problem_letter, input = input_type, id = id)
+        def_source_filename = os.path.normpath(os.path.join(data_directory, def_source_basename))
+        source_names.append(def_source_filename)
     except KeyError as error:
       # Print error message and exit.
       print 'Invalid output name format "{0}", {1} is an invalid key, only use ' \

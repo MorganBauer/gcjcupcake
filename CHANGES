@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+GCJ Cupcake v1.0, beta2, released 2010-06-10
+
+[Feature - Issue 1]: 'source_name_format' was renamed to 'source_names_format'
+  and now it's a list with zero or more default source files.
+[Feature - Issue 1]: Option -s removed from submit_solution.py.
+
+-------------------------------------------------------------------------------
+GCJ Cupcake v1.0, beta, released 2010-06-09
+
+[Feature]: Initial release.
