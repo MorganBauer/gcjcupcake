@@ -75,7 +75,7 @@ def main():
     host = current_config['host']
     user = current_config['user']
     middleware_tokens = current_config['middleware_tokens']
-    cookie = current_config['cookie']
+    cookie = None if options.renew_cookie else current_config['cookie']
     contest_id = current_config['contest_id']
     problem_ids = current_config['problem_id']
     problem_names = current_config['problem_name']
