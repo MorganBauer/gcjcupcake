@@ -27,7 +27,7 @@ def main():
   # Create an option parser and use it to parse the supplied arguments.
   program_version = 'GCJ solution submitter by jbernadas, {0}'.format(gcj_Constants.VERSION)
   parser = OptionParser(usage = '%prog [options] problem input id', version = program_version)
-  parser.add_option('-l', '--login', action = 'store_true', dest = 'renew_login',
+  parser.add_option('-l', '--login', action = 'store_true', dest = 'renew_cookie',
     help = 'Ignore the stored cookie and login again into the server')
   parser.add_option('-p', '--passwd', action = 'store', dest = 'password',
     help = 'Password used to login in the server, will be asked if not specified')
@@ -88,7 +88,7 @@ def main():
     host = current_config['host']
     user = current_config['user']
     middleware_tokens = current_config['middleware_tokens']
-    cookie = current_config['cookie']
+    cookie = None if options.renew_cookie else current_config['cookie']
     contest_id = current_config['contest_id']
     problem_ids = current_config['problem_id']
     problem_names = current_config['problem_name']
@@ -177,7 +177,7 @@ def main():
   print '-' * 79
 
   # Renew the cookie if the user requested a new login.
-  if options.renew_login:
+  if options.renew_cookie:
     cookie = gcj_CodeJamLogin.login(options.password)
 
   # Create the output submitter and send the files.
