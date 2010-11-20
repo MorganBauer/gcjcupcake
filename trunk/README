@@ -20,7 +20,7 @@ TABLE OF CONTENTS:
 -------------------------------------------------------------------------------
 0. DISCLAIMER
 
-GCJ Cupcake by jbernadas, v1.0 beta
+GCJ Cupcake by jbernadas, v1.0 beta3
 Copyright (C) 2010  Jorge Bernadas (jbernadas@gmail.com)
 
 This program is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ and tested using Python 2.6.5, so we recommend using 2.6.5 or superior.
 To use this tool, open a terminal at the main folder (the one that contains
 this file). Executables in the commands folders expect to be run from this
 directory, otherwise, they will not find the configuration files in the
-commands/config directory.
+commands/config/ directory.
 
 To ease executing these program, shell scripts (.bat for Windows computers) are
 provided, which just call the corresponding executable with the same
@@ -64,10 +64,10 @@ parameters or any other reason you see fit.
 2a. Configuring the system
 
 Before attempting to run an executable included with this software, you should 
-configure the system by writting some needed information in the user
+configure the system by writing some needed information in the user
 configuration file, located at ./commands/config/user_config.py. This file is
-formatted as a Python dict structure, but a basic one should be included with
-this software. Three values are needed to run the software:
+formatted as a Python dict structure, but a basic one is be included with this
+software. Three values are needed to run the software:
 
 - host: The name of the website hosting the contest. For normal contests and
   for the remaining of this example, the host is 'code.google.com'.
@@ -75,8 +75,8 @@ this software. Three values are needed to run the software:
 - user: Your google account, for example 'myaccount@gmail.com'.
 
 - source_names_format: This is a list of strings that specify the default
-  sources included with an output file. In this example, we will assume we use
-  C++ and set it to ['{problem}-{input}-{id}.cpp'].
+  sources to be included with an output file. In this example, we will assume
+  we use C++ and set it to ['{problem}-{input}-{id}.cpp'].
 
 Look at Section 3 for more information about these and many more configuration
 parameters.
@@ -86,12 +86,12 @@ parameters.
 
 The first step to use this software is initializing the contest. To do this
 you have to specify the contest id, which can be found in the dashboard URL
-for that contest. For example, for the GCJ 2010 Qualification Round, the
+for that contest. For example, for the GCJ 2010 Qualification Round the
 dashboard URL is:
 
 http://code.google.com/codejam/contest/dashboard?c=433101
 
-so, you can initialize the contest executing:
+so you can initialize the contest executing:
 
 $ ./init-contest 433101
 
@@ -159,9 +159,9 @@ before submitting it.
 After submitting the file, the Code Jam server will answer with a message
 string. The most important values are:
 
-- 'Wrong Answer' : Your solution for the small input was wrong, try again.
-- 'Good Job!' : Your solution for the small input was right.
-- 'Your answer has been received and will be judged at the end of the contest.' :
+- 'Wrong Answer': Your solution for the small input was wrong, try again.
+- 'Good Job!': Your solution for the small input was right, congratulations!
+- 'Your answer has been received and will be judged at the end of the contest.':
   This is received after submitting the output for the large input.
 
 -------------------------------------------------------------------------------
@@ -178,7 +178,7 @@ structure and may have the following keys:
   in 'code.google.com'.
 
 - 'password' : The password for your google account. This value is optional, if
-  it is not found the executable will ask for it when necessary.
+  it is not found the executables will ask for it when necessary.
 
 - 'data_directory' : Directory where input files are written and the output and
   main source file is read from. This value is optional, if not specified it
@@ -196,7 +196,7 @@ structure and may have the following keys:
 - 'source_names_format' : List with filename formats for the source files
   included by default; each list value must be formatted in the same way as the
   input name format. This value is *NOT* optional, to prevent accidental
-  submittion of outputs with no source files.
+  submits of outputs with no source files.
 
 All these values (with the exception of 'host', 'user' and
 'source_names_format') can be overriden in the executables by using command
@@ -212,13 +212,107 @@ Remember that those paths are relative to the current directory, not to the
 ./commands directory.
 
 IMPORTANT: Most executables do not use the user configuration file, they use
-a current configuration file (./commands/config/current_config.py) generated
-when the contest is initialized. If you want to change something, either change
-user_config.py and reinitialize the contest or make the change directly in
-current_config.py.
+a current configuration file (./commands/config/current_config.py) which is
+generated when the contest is initialized. If you want to change something
+during a contest, either change user_config.py and reinitialize the contest or
+make the change directly in current_config.py.
 
 -------------------------------------------------------------------------------
 4. EXECUTABLE FILES
 
-Comming soon, for now, see the help for each executable using the --help
-option.
+This tool is composed by four executables, one to initialize the tool for a
+contest, one to download inputs, one to submit solutions and finally one to
+login in the Google servers, just in case the login cookie becomes invalid.
+
+All executables provide a --version and a --help options. These options will
+show the current tool version and a list with all the possible options for the
+exectuable, including a brief description of each one.
+
+As said before, all executables might require your Google password if you do
+not specify it in the configuration file. Another option is to pass the
+password using the option --passwd, just be careful that specifying the password
+this way will be visible in your screen and will be stored in the commands
+history.
+
+The executables to download input and submit outputs support a --login option;
+if this option is specified the current login cookie will be ignored and a new
+one will be requested. Beware that this might cause the executables to ask for
+your password.
+
+
+4a. Contest crawler
+
+This executable is the init-contest script, and its contents can be found at the
+commands/init_contest.py file. This executable receives one positional argument
+which is the contest id (see Section 2b for instructions on how to retrieve a
+contest id), that is used to retrieve the important information of the contest,
+i.e., number of problems, middleware authentication tokens, problem ids, etc.
+
+This executable should be run before each contest, so the correct information
+is retrieved. Otherwise, unexpected behaviour might occur.
+
+
+4b. Login agent
+
+This executable is the renew-login script, and its contents can be found at the
+commands/renew_login.py file. This executable receives no positional arguments,
+and will renew the login cookie in the current configuration file with a new
+one.
+
+This executable should not be used under regular operation, this is just
+included in case your login cookie expires or becomes invalid during a contest.
+
+
+4c. Input downloader
+
+This executable is the download-input script, and its contents can be found at
+commands/download_input.py file. This executable receives three positional
+arguments, the problem letter, the input size ('small' or 'large') and a submit
+id. Both the problem letter and the input size are converted to lowercase
+before using them, but the id is case-sensitive.
+
+This executable downloads the specified input and stores it in a file inside the
+data directory. However, the flags --data-directory and --input-name are
+provided to override the default values and the ones in the configuration files.
+
+
+4d. Solution submitter
+
+This executable is the submit-solution script, and its contents can be found at
+commands/submit_solution.py file. This executable receives three positional
+arguments, the problem letter, the input size ('small' or 'large') and a submit
+id. Similar to the input downloader, both the problem letter and the input size
+are converted to lowercase before using them, but the id is case-sensitive.
+
+If a directory is specified as an output file, this executable will zip it into
+a file before submitting, so the whole folder can be sent to the server.
+
+By default this executable submits the specified output files along with the
+additional default source files specified in the configuration file. However,
+this executable provides many options to alter its default behaviour:
+
+- Similar to the input downloader, the --data-directory option can be used to
+  choose another data directory, and the --output-name option can be used to
+  change the default name of the output file.
+
+- If additional source files are needed, the --add-source option can be used to
+  submit them along with the output files.
+
+- If the source files being uploaded are to big, the --zip-sources option can be
+  used to zip all the source files into a single file before submitting. This
+  options is smart and will not zip already zipped files.
+
+- The --ignore-zip option will indicate that all zip files inside a included
+  directory should be ignored, otherwise they will be added. However, zip files
+  specified directly in the source configuration or using the --add-source will
+  be included.
+
+- The --ignore-default-source option will indicate that all default source files
+  in the configuration file should be ignored, and only source files specified
+  through the --add-source option should be sent.
+
+- There are two different encondings to send the output to the server. If the
+  --gzip-content flag is specified the output and the source files will be
+  sent using gzip; if the --plain-content flag is specified the output and the
+  source files will be sent using text/plain. If no flag is specified, the data
+  will be sent using gzip.

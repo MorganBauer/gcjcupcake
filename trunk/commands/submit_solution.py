@@ -40,9 +40,10 @@ def main():
   parser.add_option('-z', '--zip-sources', action = 'store_true', dest = 'zip_sources',
     help = 'Put the source files into a zip file before submitting')
   parser.add_option('--ignore-zip', action = 'store_true', dest = 'ignore_zip',
-    help = 'Ignore source zip files not specified directly using the -s option')
+    help = 'Ignore source zip files not specified directly using the -a option')
   parser.add_option('--ignore-default-source', action = 'store_true', dest = 'ignore_def_source',
-    help = 'Ignore source zip files not specified directly using the -s option')
+    help = 'Ignore files in the default source directory, except those specified ' +
+           'using the -a option')
   parser.add_option('--gzip-content', action = 'store_true', dest = 'gzip_content',
     help = 'Send the output and sources using gzip encoding (faster)')
   parser.add_option('--plain-content', action = 'store_false', dest = 'gzip_content',
@@ -83,7 +84,7 @@ def main():
     sys.exit(1)
 
   try:
-    # Read configuration information from the config file.  
+    # Read configuration information from the config file.
     current_config = gcj_DataManager.read_data(gcj_Constants.CURRENT_CONFIG_FILE)
     host = current_config['host']
     user = current_config['user']
