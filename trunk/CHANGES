@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
+GCJ Cupcake v1.0 beta3, released 2010-11-19
+
+[Other (Issue #3)]: README file has been completed.
+
+Affected Issues:
+Issue #3: Resolved.
+
+-------------------------------------------------------------------------------
 GCJ Cupcake v1.0 beta2, released 2010-06-10
 
 [Feature (Issue #1)]: 'source_name_format' was renamed to 'source_names_format'
